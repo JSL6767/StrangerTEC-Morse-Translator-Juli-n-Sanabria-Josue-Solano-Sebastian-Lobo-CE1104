@@ -82,8 +82,8 @@ morse_inverso = {v: k for k, v in morse.items()}        # Diccionario invertido:
 leds = {
     # FILA 1 → led14 se enciende por pin directo
     "A":[1,0,0,0,0,0,0,0,0,0,0,0,0],                  # LED1 encendido → letra A en fila 1
-    "C":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → letra C en fila 1
-    "E":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → letra E en fila 1
+    "C":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → letra C en fila 1
+    "E":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → letra E en fila 1
     "G":[0,0,0,1,0,0,0,0,0,0,0,0,0],                  # LED4 encendido → letra G en fila 1
     "I":[0,0,0,0,1,0,0,0,0,0,0,0,0],                  # LED5 encendido → letra I en fila 1
     "K":[0,0,0,0,0,1,0,0,0,0,0,0,0],                  # LED6 encendido → letra K en fila 1
@@ -97,8 +97,8 @@ leds = {
 
     # FILA 2 → led15 se enciende por pin directo
     "B":[1,0,0,0,0,0,0,0,0,0,0,0,0],                  # LED1 encendido → letra B en fila 2
-    "D":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → letra D en fila 2
-    "F":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → letra F en fila 2
+    "D":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → letra D en fila 2
+    "F":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → letra F en fila 2
     "H":[0,0,0,1,0,0,0,0,0,0,0,0,0],                  # LED4 encendido → letra H en fila 2
     "J":[0,0,0,0,1,0,0,0,0,0,0,0,0],                  # LED5 encendido → letra J en fila 2
     "L":[0,0,0,0,0,1,0,0,0,0,0,0,0],                  # LED6 encendido → letra L en fila 2
@@ -112,8 +112,8 @@ leds = {
 
     # FILA 3 → led16 se enciende por pin directo
     "0":[1,0,0,0,0,0,0,0,0,0,0,0,0],                  # LED1 encendido → número 0 en fila 3
-    "1":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → número 1 en fila 3
-    "2":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → número 2 en fila 3
+    "1":[0,1,0,0,0,0,0,0,0,0,0,0,0],                  # LED3 encendido → número 1 en fila 3
+    "2":[0,0,1,0,0,0,0,0,0,0,0,0,0],                  # LED2 encendido → número 2 en fila 3
     "3":[0,0,0,1,0,0,0,0,0,0,0,0,0],                  # LED4 encendido → número 3 en fila 3
     "4":[0,0,0,0,1,0,0,0,0,0,0,0,0],                  # LED5 encendido → número 4 en fila 3
     "5":[0,0,0,0,0,1,0,0,0,0,0,0,0],                  # LED6 encendido → número 5 en fila 3
@@ -174,10 +174,10 @@ def apagarLeds():                                       # Apaga todos los LEDs d
     led16.value(0)                                      # Apaga el LED indicador de fila 3
 
 def sonidoON():                                         # Activa el buzzer con ciclo de trabajo bajo
-    buzzer.duty_u16(2000)                               # 2000/65535 ≈ 3% de duty cycle, suficiente para sonar
+    buzzer.duty_u16(2000)                               # suficiente para sonar
 
 def sonidoOFF():                                        # Apaga el buzzer completamente
-    buzzer.duty_u16(0)                                  # 0 = sin señal = silencio total
+    buzzer.duty_u16(0)                                  
 
 def punto():                                            # Reproduce un punto Morse: señal corta de 1 unidad
     sonidoON()                                          # Enciende el buzzer
@@ -204,7 +204,7 @@ def reproducirMorse(letra):                             # Reproduce el Morse de 
     codigo     = morse[letra]                           # Obtiene el código Morse (ej: "A" → ".-")
     soloSonido = modoSwitch.value()                     # Lee el switch: 0=LEDs, 1=buzzer
 
-    print("Morse:", letra, "→", codigo, "| Modo:",     # Imprime en consola para debug
+    print("Morse:", letra, "->", codigo, "Modo:",     # Imprime en consola para debug
           "sonido" if soloSonido else "LEDs")
 
     if not soloSonido and letra in leds:                # Si modo LEDs y la letra tiene secuencia
@@ -269,10 +269,10 @@ def leerMorseDesdeBoton():                              # Lee Morse del botón f
                 time.ticks_ms(), inicio_presion)
             sonidoOFF()                                 # Apaga el buzzer al soltar
 
-            if duracion >= UMBRAL_RAYA:                 # Si estuvo más de 400ms → raya
+            if duracion >= UMBRAL_RAYA:                 # Si estuvo más de 400ms -> raya
                 codigo_actual += "-"
                 print("RAYA")
-            else:                                       # Si estuvo menos de 400ms → punto
+            else:                                       # Si estuvo menos de 400ms -> punto
                 codigo_actual += "."
                 print("PUNTO")
 
