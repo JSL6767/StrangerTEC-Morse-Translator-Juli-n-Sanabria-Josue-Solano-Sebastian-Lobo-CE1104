@@ -364,4 +364,4 @@ def start_server(ip):                                   # Inicia el servidor TCP
 
 
 ip = connect_wifi()                                     # Conecta al WiFi y obtiene la IP asignada
-start_server(ip)                                        # Inicia el servidor TCP con esa IP
+start_server(ip)                                        # Inicia el servidor TCP con esa IP 
