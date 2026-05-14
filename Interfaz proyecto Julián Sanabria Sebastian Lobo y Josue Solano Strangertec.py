@@ -4,9 +4,9 @@ import time                                             # Para manejo de tiempos
 from difflib import SequenceMatcher                     # Para calcular similitud entre strings y asignar puntaje
 import socket                                           # Para la conexión TCP con la Raspberry Pi Pico W
 
-# =========================================
+
 # CONEXIÓN A LA PICO
-# =========================================
+
 
 SERVER_IP = "172.20.10.8"                              # Dirección IP de la Pico W en la red WiFi
 PORT      = 1717                                        # Puerto TCP donde escucha el servidor de la Pico
@@ -22,9 +22,9 @@ except Exception as e:
     client_socket  = None                               # Sin socket si no hay conexión
     PICO_CONECTADA = False                              # Bandera: indica modo simulado
 
-# =========================================
+
 # MORSE
-# =========================================
+
 
 morse_inverso = {v: k for k, v in {                    # Construye el diccionario inverso automáticamente
     "A": ".-",    "B": "-...",  "C": "-.-.",            # Código Morse letras A, B, C
@@ -48,9 +48,9 @@ PAUSA_LETRA   = 600                                     # 600ms de silencio = fi
 PAUSA_PALABRA = 1400                                    # 1400ms de silencio = espacio entre palabras
 FIN_MENSAJE   = 4200                                    # 4200ms de silencio = fin del mensaje completo
 
-# =========================================
+
 # COMUNICACIÓN CON PICO
-# =========================================
+
 
 def enviar_pico(mensaje):                               # Envía un mensaje a la Pico y espera respuesta
     if not PICO_CONECTADA or client_socket is None:     # Si no hay conexión devuelve texto simulado
@@ -62,9 +62,9 @@ def enviar_pico(mensaje):                               # Envía un mensaje a la
         print("Error comunicando con Pico:", e)
         return ""
 
-# =========================================
+
 # PYGAME
-# =========================================
+
 
 pygame.init()                                           # Inicializa todos los módulos de Pygame
 
@@ -96,9 +96,9 @@ fuente_mediana = pygame.font.SysFont("Arial", cy(22))            # Fuente para o
 fuente_pequena = pygame.font.SysFont("Arial", cy(16))            # Fuente para instrucciones y detalles
 fuente_mono    = pygame.font.SysFont("Courier", cy(28), bold=True) # Fuente monoespaciada para símbolos Morse
 
-# =========================================
+
 # FRASES
-# =========================================
+
 
 frases = [                                              # Lista de frases disponibles para el juego
     "SOS", "SI", "NO", "SANABRIA", "JOSUDA",
@@ -110,9 +110,9 @@ velocidades  = [1.0, 0.7, 0.4]                         # Velocidades por ronda: 
 
 ranking = []                                            # Lista que guarda los mejores puntajes de la sesión
 
-# =========================================
+
 # FUNCIONES GRÁFICAS
-# =========================================
+
 
 def dibujar_texto(texto, fuente, color, x, y):         # Dibuja texto en una posición específica
     sup = fuente.render(str(texto), True, color)        # Renderiza el texto con antialiasing
@@ -139,9 +139,9 @@ def dibujar_boton_visual(presionado, x, y, radio=40):  # Dibuja el botón animad
     rect  = label.get_rect(center=(cx(x), cy(y)))      # Centra la etiqueta en el círculo
     pantalla.blit(label, rect)                          # Dibuja la etiqueta
 
-# =========================================
+
 # PUNTAJE
-# =========================================
+
 
 def calcular_puntaje(original, respuesta):             # Calcula puntaje comparando frase original con respuesta
     original  = original.strip().upper()               # Normaliza la frase original
@@ -155,9 +155,9 @@ def color_puntaje(p):                                  # Devuelve el color segú
     elif p >= 60: return AMARILLO                      # Amarillo para puntaje aceptable
     else:         return ROJO                          # Rojo para puntaje bajo
 
-# =========================================
+
 # MENÚ PRINCIPAL
-# =========================================
+
 
 def menu_principal():                                  # Muestra el menú de selección de modo de juego
     reloj = pygame.time.Clock()                        # Reloj para controlar FPS
@@ -186,9 +186,7 @@ def menu_principal():                                  # Muestra el menú de sel
                 if evento.key == pygame.K_ESCAPE: return None  # ESC → salir
         reloj.tick(60)                                 # Limita a 60 FPS
 
-# =========================================
 # TURNO TECLADO (Jugador A)
-# =========================================
 
 def turno_texto(frase_objetivo, nombre, color):        # Pantalla donde el jugador escribe su respuesta
     reloj = pygame.time.Clock()
@@ -220,9 +218,9 @@ def turno_texto(frase_objetivo, nombre, color):        # Pantalla donde el jugad
                         texto_usuario += evento.unicode.upper() # Agrega letra en mayúscula
         reloj.tick(60)
 
-# =========================================
+
 # TURNO BOTÓN
-# =========================================
+
 
 def turno_boton(frase_objetivo, nombre, color):        # Turno del Jugador B: ESPACIO o botón físico
     reloj    = pygame.time.Clock()
@@ -402,9 +400,8 @@ def turno_boton(frase_objetivo, nombre, color):        # Turno del Jugador B: ES
 
     return frase_final if frase_final else ""          # Retorna la frase decodificada
 
-# =========================================
+
 # TRANSICIÓN
-# =========================================
 
 def pantalla_transicion(nombre, color):                # Pantalla de cambio de turno entre jugadores
     reloj = pygame.time.Clock()
@@ -420,9 +417,9 @@ def pantalla_transicion(nombre, color):                # Pantalla de cambio de t
                 if evento.key == pygame.K_RETURN: return True # ENTER continúa
         reloj.tick(60)
 
-# =========================================
+
 # RESULTADOS
-# =========================================
+
 
 def pantalla_resultados(                               # Muestra resultados de la ronda o puntaje final
     frase_objetivo,
@@ -474,9 +471,9 @@ def pantalla_resultados(                               # Muestra resultados de l
                 if evento.key == pygame.K_ESCAPE: return False # ESC vuelve al menú
         reloj.tick(60)
 
-# =========================================
+
 # JUEGO
-# =========================================
+
 
 def jugar(modo):                                       # Función principal del juego según el modo elegido
 
@@ -562,9 +559,9 @@ def jugar(modo):                                       # Función principal del 
             )
             if not continuar: return                   # ESC vuelve al menú principal
 
-# =========================================
+
 # MAIN
-# =========================================
+
 
 if __name__ == "__main__":                             # Punto de entrada del programa
     while True:
